@@ -12,5 +12,9 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>handling-enums-start</module>
+        <module>handling-enums-end</module>
+        <module>json-include-exclude-start</module>
+        <module>json-include-exclude-end</module>
     </modules>
 </project>
