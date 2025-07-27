@@ -12,5 +12,9 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>introduction-to-jackson-start</module>
+        <module>introduction-to-jackson-end</module>
+        <module>basic-serialization-and-deserialization-start</module>
+        <module>basic-serialization-and-deserialization-end</module>
     </modules>
 </project>
