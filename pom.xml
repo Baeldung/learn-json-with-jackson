@@ -16,5 +16,7 @@
         <module>handling-enums-end</module>
         <module>json-include-exclude-start</module>
         <module>json-include-exclude-end</module>
+        <module>handling-date-and-time-values-start</module>
+	      <module>handling-date-and-time-values-end</module>
     </modules>
 </project>
