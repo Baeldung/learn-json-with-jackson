@@ -18,5 +18,7 @@
         <module>json-include-exclude-end</module>
         <module>handling-date-and-time-values-start</module>
 	      <module>handling-date-and-time-values-end</module>
+        <module>handling-unknown-properties-start</module>
+        <module>handling-unknown-properties-end</module>
     </modules>
 </project>
