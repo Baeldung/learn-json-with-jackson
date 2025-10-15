@@ -12,5 +12,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>the-jackson-streaming-api-start</module>
+        <module>the-jackson-streaming-api-end</module>
     </modules>
 </project>
