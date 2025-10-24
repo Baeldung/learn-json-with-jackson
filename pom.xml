@@ -12,6 +12,10 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>working-with-collections-and-maps-start</module>
+        <module>working-with-collections-and-maps-end</module>
+        <module>using-json-views-start</module>
+        <module>using-json-views-end</module>
         <module>the-jackson-streaming-api-start</module>
         <module>the-jackson-streaming-api-end</module>
     </modules>
