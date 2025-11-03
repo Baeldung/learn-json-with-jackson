@@ -12,6 +12,8 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>the-jackson-tree-model-start</module>
+        <module>the-jackson-tree-model-end</module>
         <module>working-with-collections-and-maps-start</module>
         <module>working-with-collections-and-maps-end</module>
         <module>using-json-views-start</module>
