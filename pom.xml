@@ -12,6 +12,8 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>handling-nested-objects-start</module>
+        <module>handling-nested-objects-end</module>
         <module>managing-polymorphic-types-start</module>
         <module>managing-polymorphic-types-end</module>
         <module>the-jackson-tree-model-start</module>
