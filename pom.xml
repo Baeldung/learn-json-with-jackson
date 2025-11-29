@@ -24,5 +24,7 @@
         <module>using-json-views-end</module>
         <module>the-jackson-streaming-api-start</module>
         <module>the-jackson-streaming-api-end</module>
+        <module>error-handling-start</module>
+        <module>error-handling-end</module>
     </modules>
 </project>
