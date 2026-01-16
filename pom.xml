@@ -22,5 +22,7 @@
         <module>handling-date-and-time-values-end</module>
         <module>handling-unknown-properties-start</module>
         <module>handling-unknown-properties-end</module>
+        <module>custom-serialization-and-deserialization-start</module>
+        <module>custom-serialization-and-deserialization-end</module>
     </modules>
 </project>
