@@ -81,6 +81,7 @@ public class Campaign {
 
     @Override
     public String toString() {
-        return "Campaign [code=" + code + ", name=" + name + ", description=" + description + ", address=" + address + ", closed=" + closed + "]";
+        return "Campaign [code=" + code + ", name=" + name + ", description=" + description + ", address=" + address + ", closed=" + closed
+                + "]";
     }
 }

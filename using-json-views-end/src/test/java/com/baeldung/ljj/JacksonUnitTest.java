@@ -7,10 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import com.baeldung.ljj.domain.model.Campaign;
 import com.baeldung.ljj.domain.model.Views;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 class JacksonUnitTest {
 
@@ -18,12 +17,12 @@ class JacksonUnitTest {
     Campaign campaign = new Campaign("C1", "Campaign 1", "Description of Campaign 1", null, false);
 
     @Test
-    void givenCampaign_whenSerializingWithSummaryView_thenOnlySummaryFieldsAreIncluded() throws JsonProcessingException {
+    void givenCampaign_whenSerializingWithSummaryView_thenOnlySummaryFieldsAreIncluded() {
         objectMapper = JsonMapper.builder()
-            .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
-            .build();
+                .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
+                .build();
         String json = objectMapper.writerWithView(Views.Summary.class)
-            .writeValueAsString(campaign);
+                .writeValueAsString(campaign);
 
         assertTrue(json.contains("\"code\""));
         assertTrue(json.contains("\"name\""));
@@ -33,12 +32,12 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenCampaign_whenSerializingWithDetailView_thenSummaryAndDetailFieldsAreIncluded() throws JsonProcessingException {
+    void givenCampaign_whenSerializingWithDetailView_thenSummaryAndDetailFieldsAreIncluded() {
         objectMapper = JsonMapper.builder()
-            .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
-            .build();
+                .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
+                .build();
         String json = objectMapper.writerWithView(Views.Detail.class)
-            .writeValueAsString(campaign);
+                .writeValueAsString(campaign);
 
         assertTrue(json.contains("\"code\""));
         assertTrue(json.contains("\"name\""));
@@ -48,7 +47,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenCampaign_whenSerializingWithoutView_thenAllFieldsAreIncluded() throws JsonProcessingException {
+    void givenCampaign_whenSerializingWithoutView_thenAllFieldsAreIncluded() {
         String json = objectMapper.writeValueAsString(campaign);
 
         assertTrue(json.contains("\"code\""));
@@ -59,16 +58,16 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenFieldInMultipleViews_whenSerializingWithEachView_thenFieldIsIncluded() throws JsonProcessingException {
+    void givenFieldInMultipleViews_whenSerializingWithEachView_thenFieldIsIncluded() {
         objectMapper = JsonMapper.builder()
-            .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
-            .build();
+                .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
+                .build();
         String summaryJson = objectMapper.writerWithView(Views.Summary.class)
-            .writeValueAsString(campaign);
+                .writeValueAsString(campaign);
         assertTrue(summaryJson.contains("\"code\""));
 
         String internalJson = objectMapper.writerWithView(Views.Internal.class)
-            .writeValueAsString(campaign);
+                .writeValueAsString(campaign);
         assertTrue(internalJson.contains("\"code\""));
     }
 

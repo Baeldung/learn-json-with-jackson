@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import com.baeldung.ljj.domain.model.FreelanceWorker;
 import com.baeldung.ljj.domain.model.FullTimeWorker;
 import com.baeldung.ljj.domain.model.Team;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.ObjectMapper;
 
 class PolymorphicTypesUnitTest {
 
@@ -30,13 +30,14 @@ class PolymorphicTypesUnitTest {
     @Test
     void givenJsonWithoutTypeInfo_whenDeserializingTeam_thenFails() {
         String json = "{\"name\":\"Baeldung\",\"members\":[{\"id\":1,\"name\":\"John Doe\",\"monthlySalary\":5000.0}]}";
-        assertThrows(JsonMappingException.class, () -> objectMapper.readValue(json, Team.class));
+        assertThrows(DatabindException.class, () -> objectMapper.readValue(json, Team.class));
     }
 
     @Test
     void givenJsonWithTypeInfo_whenDeserializingTeam_thenSucceed() throws Exception {
-        String json = "{\"name\":\"Baeldung\",\"members\":[{\"@type\":\"fulltime\",\"id\":1,\"name\":\"John Doe\",\"monthlySalary\":5000.0}," +
-            "{\"@type\":\"freelance\",\"id\":2,\"name\":\"Jane Smith\",\"hourlyRate\":50.0}]}\n";
+        String json = "{\"name\":\"Baeldung\",\"members\":[{\"@type\":\"fulltime\",\"id\":1,\"name\":\"John Doe\",\"monthlySalary\":5000.0},"
+                +
+                "{\"@type\":\"freelance\",\"id\":2,\"name\":\"Jane Smith\",\"hourlyRate\":50.0}]}\n";
 
         Team deserialized = objectMapper.readValue(json, Team.class);
 
