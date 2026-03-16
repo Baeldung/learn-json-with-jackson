@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import com.baeldung.ljj.domain.model.Campaign;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 class JacksonUnitTest {
 
@@ -25,12 +25,12 @@ class JacksonUnitTest {
     @Test
     void whenDeserializingJson_thenCorrectCampaignObjectGenerated() throws Exception {
         String jsonCampaign = """
-            {
-              "code": "%s",
-              "name": "%s",
-              "description": "%s"
-            }
-            """.formatted("C001", "Campaign 1", "Deserialization");
+                {
+                  "code": "%s",
+                  "name": "%s",
+                  "description": "%s"
+                }
+                """.formatted("C001", "Campaign 1", "Deserialization");
         Campaign campaign = objectMapper.readValue(jsonCampaign, Campaign.class);
 
         assertEquals("C001", campaign.getCode());

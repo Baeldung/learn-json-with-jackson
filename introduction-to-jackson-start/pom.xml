@@ -44,7 +44,7 @@
         <java.version>24</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
-        <jackson.version>2.19.0</jackson.version>
+        <jackson.version>3.1.0</jackson.version>
         <junit-jupiter.version>5.12.2</junit-jupiter.version>
         <maven-surefire.version>3.5.3</maven-surefire.version>
     </properties>
