@@ -1,8 +1,8 @@
 package com.baeldung.ljj;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 class JacksonUnitTest {
 
-    final ObjectMapper objectMapper = new ObjectMapper();
+    final JsonMapper objectMapper = new JsonMapper();
 }

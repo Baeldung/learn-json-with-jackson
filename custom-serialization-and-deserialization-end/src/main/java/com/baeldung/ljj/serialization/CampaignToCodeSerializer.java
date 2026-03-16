@@ -1,24 +1,19 @@
 package com.baeldung.ljj.serialization;
 
-import java.io.IOException;
-
 import com.baeldung.ljj.domain.model.Campaign;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ser.std.StdSerializer;
 
 public class CampaignToCodeSerializer extends StdSerializer<Campaign> {
 
     public CampaignToCodeSerializer() {
-        this(null);
-    }
-
-    public CampaignToCodeSerializer(Class<Campaign> t) {
-        super(t);
+        super(Campaign.class);
     }
 
     @Override
-    public void serialize(Campaign value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(Campaign value, JsonGenerator gen, SerializationContext ctxt) throws JacksonException {
         gen.writeString(value.getCode());
     }
 }

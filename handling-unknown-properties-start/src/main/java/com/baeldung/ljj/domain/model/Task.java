@@ -3,7 +3,7 @@ package com.baeldung.ljj.domain.model;
 import java.time.LocalDate;
 
 public class Task {
-    
+
     private String code;
 
     private String name;
@@ -24,11 +24,11 @@ public class Task {
         this.status = status;
         this.campaign = campaign;
     }
-    
+
     public String getCode() {
         return code;
     }
-    
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -76,6 +76,6 @@ public class Task {
     @Override
     public String toString() {
         return "Task [code= " + code + "name=" + name + ", description=" + description + ", dueDate=" + dueDate +
-            ", status=" + status + ", campaign=" + campaign + "]";
+                ", status=" + status + ", campaign=" + campaign + "]";
     }
 }

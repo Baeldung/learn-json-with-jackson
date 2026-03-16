@@ -3,10 +3,9 @@ package com.baeldung.ljj;
 import com.baeldung.ljj.domain.model.Campaign;
 import com.baeldung.ljj.domain.model.CampaignWithIgnoreUnknown;
 import com.baeldung.ljj.domain.model.CampaignWithSetUnknownProperties;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.exc.UnrecognizedPropertyException;
+import tools.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class JacksonUnitTest {
 
     @Test
-    void givenUnknownProperty_whenUsingDefaultMapper_thenFail() {
-        ObjectMapper mapper = new ObjectMapper();
+    void givenUnknownProperty_whenUsingStrictMapper_thenFail() {
+        JsonMapper mapper = JsonMapper.builder().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build();
         String json = """
                 {
                   "code": "C2",
@@ -30,8 +29,8 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenMapperConfiguredToIgnoreUnknown_thenDeserializationSucceeds() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    void givenDefaultMapper_thenDeserializationSucceeds() {
+        JsonMapper mapper = JsonMapper.builder().build();
         String json = """
                 {
                   "code": "C2",
@@ -45,8 +44,8 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenJsonIgnorePropertiesConfiguredToIgnoreUnknown_thenDeserializationSucceeds() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    void givenJsonIgnorePropertiesConfiguredToIgnoreUnknown_thenDeserializationSucceeds() {
+        JsonMapper mapper = JsonMapper.builder().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build();
         String json = """
                 {
                   "code": "C2",
@@ -60,8 +59,8 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenJsonAnySetterConfiguredToRecordUnknown_thenDeserializationSucceeds() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    void givenJsonAnySetterConfiguredToRecordUnknown_thenDeserializationSucceeds() {
+        JsonMapper mapper = JsonMapper.builder().build();
         String json = """
                 {
                   "code": "C2",

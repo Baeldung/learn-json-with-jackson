@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Test;
 import com.baeldung.ljj.domain.model.Campaign;
 import com.baeldung.ljj.domain.model.PrivateCampaign;
 import com.baeldung.ljj.domain.model.PublicCampaign;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 class JacksonUnitTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void whenUsingJsonIncludeAtFieldLevel_thenFieldOmitted() throws JsonProcessingException {
+    void whenUsingJsonIncludeAtFieldLevel_thenFieldOmitted() throws Exception {
         Campaign campaign = new Campaign(null, "My Campaign", "Description of campaign 01");
         String json = objectMapper.writeValueAsString(campaign);
 
@@ -27,7 +26,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonIncludeAtClassLevelWithEmptyOption_thenOmitEmptyField() throws JsonProcessingException {
+    void whenUsingJsonIncludeAtClassLevelWithEmptyOption_thenOmitEmptyField() throws Exception {
         Campaign campaign = new Campaign("C01", "", "Description of campaign 01");
         String json = objectMapper.writeValueAsString(campaign);
 
@@ -35,7 +34,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonIgnore_thenOmitTheAnnotatedField() throws JsonProcessingException {
+    void whenUsingJsonIgnore_thenOmitTheAnnotatedField() throws Exception {
         Campaign campaign = new Campaign("C01", "My Campaign", "Description of campaign 01");
         campaign.setClosed(true);
         String json = objectMapper.writeValueAsString(campaign);
@@ -44,7 +43,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonPropertyWithReadOption_thenOmitEmptyField() throws JsonProcessingException {
+    void whenUsingJsonPropertyWithReadOption_thenOmitEmptyField() throws Exception {
         Campaign campaign = new Campaign("C01", "My Campaign", "Description of campaign 01");
         String json = objectMapper.writeValueAsString(campaign);
 
@@ -52,7 +51,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonIgnorePropertiesAtClassLevel_thenOmitSpecifiedFields() throws JsonProcessingException {
+    void whenUsingJsonIgnorePropertiesAtClassLevel_thenOmitSpecifiedFields() throws Exception {
         PrivateCampaign campaign = new PrivateCampaign("PC01", "My Private Campaign", "Description of private campaign 01");
         String json = objectMapper.writeValueAsString(campaign);
 
@@ -61,10 +60,10 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonIgnorePropertiesAtClassLevel_thenOmitSpecifiedFieldsDuringSerializationAndReplaceWithDefault() throws JsonProcessingException {
+    void whenUsingJsonIgnorePropertiesAtClassLevel_thenOmitSpecifiedFieldsDuringSerializationAndReplaceWithDefault() throws Exception {
         String json = """
-            {"code": "PC01", "name": "My Private Campaign", "description": "Description of private campaign 01", "tasks": [], "closed": true}
-            """;
+                {"code": "PC01", "name": "My Private Campaign", "description": "Description of private campaign 01", "tasks": [], "closed": true}
+                """;
         PrivateCampaign campaign = objectMapper.readValue(json, PrivateCampaign.class);
 
         assertNull(campaign.getName());
@@ -72,7 +71,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonIncludePropertiesAtClassLevel_thenOmitNonSpecifiedFields() throws JsonProcessingException {
+    void whenUsingJsonIncludePropertiesAtClassLevel_thenOmitNonSpecifiedFields() throws Exception {
         PublicCampaign publicCampaign = new PublicCampaign("PUC01", "My Public Campaign", "Description of public campaign 01");
         String json = objectMapper.writeValueAsString(publicCampaign);
 
@@ -81,10 +80,10 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonIncludePropertiesAtClassLevel_thenOmitNonSpecifiedFieldsDuringDeserialization() throws JsonProcessingException {
+    void whenUsingJsonIncludePropertiesAtClassLevel_thenOmitNonSpecifiedFieldsDuringDeserialization() throws Exception {
         String json = """
-            {"code": "PUC01", "name": "My Public Campaign", "description": "Description of public campaign 01"}
-            """;
+                {"code": "PUC01", "name": "My Public Campaign", "description": "Description of public campaign 01"}
+                """;
         PublicCampaign publicCampaign = objectMapper.readValue(json, PublicCampaign.class);
 
         assertEquals("My Public Campaign", publicCampaign.getName());

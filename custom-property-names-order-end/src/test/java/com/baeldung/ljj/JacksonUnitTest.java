@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Test;
 
 import com.baeldung.ljj.domain.model.Campaign;
 import com.baeldung.ljj.domain.model.Task;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 class JacksonUnitTest {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final JsonMapper objectMapper = new JsonMapper();
 
     @Test
-    void givenFieldAndGetter_whenSerializing_thenJacksonBehaviorChecked() throws JsonProcessingException {
+    void givenFieldAndGetter_whenSerializing_thenJacksonBehaviorChecked() {
         // Given
         Campaign campaign = new Campaign("CODE01", "Campaign Name", "Description");
 
@@ -36,7 +35,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenPropertyWithCustomName_whenSerializing_thenCustomNameAppearsInJson() throws JsonProcessingException {
+    void givenPropertyWithCustomName_whenSerializing_thenCustomNameAppearsInJson() {
         // Given
         Campaign original = new Campaign("T101", "Rename", "Custom property name");
 
@@ -50,11 +49,11 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenPropertyWithCustomName_whenDeserializing_thenFieldIsCorrectlyDeserialized() throws JsonProcessingException {
+    void givenPropertyWithCustomName_whenDeserializing_thenFieldIsCorrectlyDeserialized() {
         // Given
         String json = """
-            {"code":"T101","name":"Rename","description":"Custom property name","tasks":[],"is_closed":false}
-            """;
+                {"code":"T101","name":"Rename","description":"Custom property name","tasks":[],"is_closed":false}
+                """;
 
         // When
         Campaign renameCampaign = objectMapper.readValue(json, Campaign.class);
@@ -64,7 +63,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenJsonPropertyOrder_whenSerializing_thenKeysAppearInSequence() throws JsonProcessingException {
+    void givenJsonPropertyOrder_whenSerializing_thenKeysAppearInSequence() {
         // Given
         Campaign original = new Campaign("T101", "Rename", "JSON property order");
 
@@ -85,7 +84,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenJsonValue_whenSerializingTask_thenSingleStringProduced() throws JsonProcessingException {
+    void givenJsonValue_whenSerializingTask_thenSingleStringProduced() {
         // Given
         Task task = new Task("T101", "Task101", "JSON value example", LocalDate.now(), null, null);
         Campaign original = new Campaign("T102", "Campaign102", "Big Campaign");
@@ -96,7 +95,7 @@ class JacksonUnitTest {
 
         // Then
         String expectedJson = """
-            {"code":"t102","name":"Campaign102","description":"Big Campaign","is_closed":false,"tasks":["Task: code= T101, name=Task101, description=JSON value example."]}""";
+                {"code":"t102","name":"Campaign102","description":"Big Campaign","is_closed":false,"tasks":["Task: code= T101, name=Task101, description=JSON value example."]}""";
         assertEquals(expectedJson, json);
     }
 }

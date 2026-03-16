@@ -11,15 +11,14 @@ import java.time.ZonedDateTime;
 import org.junit.jupiter.api.Test;
 
 import com.baeldung.ljj.domain.model.Campaign;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 class JacksonUnitTest {
 
-    final ObjectMapper defaultObjectMapper = new ObjectMapper();
+    final JsonMapper defaultObjectMapper = JsonMapper.builder().build();
 
     @Test
-    void givenCampaignJsonString_whenReadValueByObjectMapper_thenConvertedToCampaignObject() throws JsonProcessingException {
+    void givenCampaignJsonString_whenReadValueByObjectMapper_thenConvertedToCampaignObject() {
         //given
         String campaignJson = "{\"code\": \"C1\", \"name\": \"Campaign 1\", \"description\": \"The description of Campaign 1\"}";
 
@@ -39,7 +38,7 @@ class JacksonUnitTest {
 
         // when
         Campaign campaign = defaultObjectMapper.readValue(getClass().getClassLoader()
-            .getResource("campaign.json"), Campaign.class);
+                .getResourceAsStream("campaign.json"), Campaign.class);
 
         // then
         assertNotNull(campaign);

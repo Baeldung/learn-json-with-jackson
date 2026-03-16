@@ -28,27 +28,28 @@ import com.baeldung.ljj.domain.model.Campaign;
 import com.baeldung.ljj.domain.model.Task;
 import com.baeldung.ljj.domain.model.TaskStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.databind.cfg.DateTimeFeature;
+import tools.jackson.databind.json.JsonMapper;
 
 class JacksonUnitTest {
 
-    final ObjectMapper defaultObjectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-    final ObjectMapper isoObjectMapper = new ObjectMapper().registerModule(new JavaTimeModule())
-        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-        .setTimeZone(TimeZone.getTimeZone("America/New_York"));
-    final ObjectMapper isoObjectMapperNotAdjustingZone = new ObjectMapper().registerModule(new JavaTimeModule())
-        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-        .disable(SerializationFeature.WRITE_DATES_WITH_CONTEXT_TIME_ZONE)
-        .disable(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
-        .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
-        .setTimeZone(TimeZone.getTimeZone("America/New_York"));
+    final JsonMapper defaultObjectMapper = JsonMapper.builder().build();
+    final JsonMapper timestampObjectMapper = JsonMapper.builder()
+            .enable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .enable(DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
+            .build();
+    final JsonMapper isoObjectMapper = JsonMapper.builder()
+            .defaultTimeZone(TimeZone.getTimeZone("America/New_York"))
+            .build();
+    final JsonMapper isoObjectMapperNotAdjustingZone = JsonMapper.builder()
+            .disable(DateTimeFeature.WRITE_DATES_WITH_CONTEXT_TIME_ZONE)
+            .disable(DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
+            .disable(DateTimeFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+            .defaultTimeZone(TimeZone.getTimeZone("America/New_York"))
+            .build();
 
     @Test
-    void givenCampaignJsonString_whenReadValueByObjectMapper_thenConvertedToCampaignObject() throws JsonProcessingException {
+    void givenCampaignJsonString_whenReadValueByObjectMapper_thenConvertedToCampaignObject() {
         //given
         String campaignJson = "{\"code\": \"C1\", \"name\": \"Campaign 1\", \"description\": \"The description of Campaign 1\"}";
 
@@ -68,7 +69,7 @@ class JacksonUnitTest {
 
         // when
         Campaign campaign = defaultObjectMapper.readValue(getClass().getClassLoader()
-            .getResource("campaign.json"), Campaign.class);
+                .getResourceAsStream("campaign.json"), Campaign.class);
 
         // then
         assertNotNull(campaign);
@@ -77,35 +78,63 @@ class JacksonUnitTest {
         assertEquals("The description of Campaign 2", campaign.getDescription());
     }
 
-    // Default date and time mappings 
+    // Default date and time mappings
 
     @Test
-    void whenUsingDefaultMapper_thenLocalDateAsArray() throws JsonProcessingException {
+    void whenUsingDefaultMapper_thenLocalDateAsIsoString() {
         LocalDate date = LocalDate.of(2045, 3, 1);
         String json = defaultObjectMapper.writeValueAsString(date);
+        assertEquals("\"2045-03-01\"", json);
+    }
+
+    @Test
+    void whenUsingTimestampMapper_thenLocalDateAsArray() {
+        LocalDate date = LocalDate.of(2045, 3, 1);
+        String json = timestampObjectMapper.writeValueAsString(date);
         assertEquals("[2045,3,1]", json);
     }
 
     @Test
-    void whenUsingDefaultMapper_thenSerializeAsArray() throws JsonProcessingException {
+    void whenUsingDefaultMapper_thenSerializeAsIsoString() {
         Task task = new Task("T1", "Task 1", "The Task 1", LocalDate.of(2045, 3, 1), TaskStatus.TO_DO, null);
         String json = defaultObjectMapper.writeValueAsString(task);
+        assertTrue(json.contains("\"2045-03-01\""));
+    }
+
+    @Test
+    void whenUsingTimestampMapper_thenSerializeAsArray() {
+        Task task = new Task("T1", "Task 1", "The Task 1", LocalDate.of(2045, 3, 1), TaskStatus.TO_DO, null);
+        String json = timestampObjectMapper.writeValueAsString(task);
         assertTrue(json.contains("[2045,3,1]"));
     }
 
     @Test
-    void whenUsingDefaultMapper_thenSerializeDateTimeAsArray() throws JsonProcessingException {
+    void whenUsingTimestampMapper_thenSerializeDateTimeAsArray() {
         LocalDateTime dateTime = LocalDateTime.of(2045, 6, 28, 0, 0, 50, 1234);
-        String dateTimeJson = defaultObjectMapper.writeValueAsString(dateTime);
+        String dateTimeJson = timestampObjectMapper.writeValueAsString(dateTime);
         assertEquals("[2045,6,28,0,0,50,1234]", dateTimeJson);
 
         LocalDateTime dateTimeWithZeros = LocalDateTime.of(2045, 6, 28, 10, 0, 0);
-        String dateTimeWithZerosJson = defaultObjectMapper.writeValueAsString(dateTimeWithZeros);
+        String dateTimeWithZerosJson = timestampObjectMapper.writeValueAsString(dateTimeWithZeros);
         assertEquals("[2045,6,28,10,0]", dateTimeWithZerosJson);
     }
 
     @Test
-    void whenUsingDefaultMapper_thenDeserializeDateArray() throws JsonProcessingException {
+    void whenUsingDefaultMapper_thenDeserializeFromIsoString() {
+        String json = """
+            {
+                "code": "T1",
+                "name": "Task 1",
+                "description": "Task 1",
+                "dueDate": "2045-03-01",
+                "status": "TO_DO"
+            }""";
+        Task task = defaultObjectMapper.readValue(json, Task.class);
+        assertEquals(task.getDueDate(), LocalDate.of(2045, 3, 1));
+    }
+
+    @Test
+    void whenUsingTimestampMapper_thenDeserializeDateArray() {
         String json = """
             {
                 "code": "T1",
@@ -114,12 +143,12 @@ class JacksonUnitTest {
                 "dueDate": [2045,3,1],
                 "status": "TO_DO"
             }""";
-        Task task = defaultObjectMapper.readValue(json, Task.class);
+        Task task = timestampObjectMapper.readValue(json, Task.class);
         assertEquals(task.getDueDate(), LocalDate.of(2045, 3, 1));
     }
 
     @Test
-    void whenUsingDefaultMapper_thenDeserializeFromArray() throws JsonProcessingException {
+    void whenUsingDefaultMapper_thenDeserializeFromArray() {
         LocalDateTime dateTime = defaultObjectMapper.readValue("[2045,6,28,10,10]", LocalDateTime.class);
         assertEquals(LocalDateTime.of(2045, 6, 28, 10, 10), dateTime);
     }
@@ -127,7 +156,7 @@ class JacksonUnitTest {
     // Using ISO-8601
 
     @Test
-    void whenUsingIso8601Format_thenSerializeAsIsoFormat() throws JsonProcessingException {
+    void whenUsingIso8601Format_thenSerializeAsIsoFormat() {
         LocalDate date = LocalDate.of(2045, 3, 1);
         LocalDateTime dateTime = LocalDateTime.of(2045, 6, 28, 10, 10, 0);
         LocalDateTime preciseDateTime = LocalDateTime.of(2045, 6, 28, 10, 10, 50, 1234);
@@ -142,7 +171,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingIso8601Format_thenSerializeAsIsoFormatIncMillis() throws JsonProcessingException {
+    void whenUsingIso8601Format_thenSerializeAsIsoFormatIncMillis() {
         LocalDate date = LocalDate.of(2045, 3, 1);
         LocalDateTime dateTime = LocalDateTime.of(2045, 6, 28, 10, 10, 0, 987654321);
 
@@ -154,7 +183,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingIso8601Formats_thenDeserializeFromIsoFormat() throws JsonProcessingException {
+    void whenUsingIso8601Formats_thenDeserializeFromIsoFormat() {
         String isoDateTime = "\"2045-06-28T10:10:00\"";
         String isoDate = "\"2045-03-01\"";
         LocalDateTime dateTime = isoObjectMapper.readValue(isoDateTime, LocalDateTime.class);
@@ -166,20 +195,19 @@ class JacksonUnitTest {
     // Time Zones - serialization
 
     @Test
-    void givenZonedDateTime_whenSerializing_thenJSONFormattedUsingContextTimezone() throws JsonProcessingException {
+    void givenZonedDateTime_whenSerializing_thenJSONFormattedUsingContextTimezone() {
         ZonedDateTime zonedDateTime = ZonedDateTime.of(2045, 6, 28, 10, 10, 10, 0, ZoneId.of("Europe/Berlin"));
 
-        String defaultMapperJson = defaultObjectMapper.writeValueAsString(zonedDateTime);
+        String timestampMapperJson = timestampObjectMapper.writeValueAsString(zonedDateTime);
         String isoMapperJson = isoObjectMapper.writeValueAsString(zonedDateTime);
 
-        assertEquals("2382250210.000000000", defaultMapperJson);
+        assertEquals("2382250210.000000000", timestampMapperJson);
         assertEquals("\"2045-06-28T04:10:10-04:00\"", isoMapperJson); // Adjusts to context time zone
     }
 
     @Test
-    void givenZonedDateTime_whenSerializingWithNoContextTimeZone_thenJSONFormattedUsingDateTimezone() throws JsonProcessingException {
-        final ObjectMapper isoObjectMapperWithoutTimezone = new ObjectMapper().registerModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    void givenZonedDateTime_whenSerializingWithNoContextTimeZone_thenJSONFormattedUsingDateTimezone() {
+        final JsonMapper isoObjectMapperWithoutTimezone = JsonMapper.builder().build();
 
         ZonedDateTime zonedDateTime = ZonedDateTime.of(2045, 6, 28, 10, 10, 10, 0, ZoneId.of("Europe/Berlin"));
 
@@ -189,7 +217,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenZonedDateTime_whenSerializingNowAdjustingTZ_thenJSONFormattedUsingDateTimeTz() throws JsonProcessingException {
+    void givenZonedDateTime_whenSerializingNowAdjustingTZ_thenJSONFormattedUsingDateTimeTz() {
         ZonedDateTime zonedDateTime = ZonedDateTime.of(2045, 6, 28, 10, 10, 10, 0, ZoneId.of("Europe/Berlin"));
         ZonedDateTime sameZonedDateTimeinUTC = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
 
@@ -203,7 +231,7 @@ class JacksonUnitTest {
     // Time Zones - deserialization
 
     @Test
-    void givenEpochZonedTimeFields_whenUsingDefaultMappers_thenDeserializeWithoutTimeZone() throws JsonProcessingException {
+    void givenEpochZonedTimeFields_whenUsingDefaultMappers_thenDeserializeWithoutTimeZone() {
         String epochTimezoneJson = "2382250210.000000000";
 
         ZonedDateTime zonedDateTimeFromDefault = defaultObjectMapper.readValue(epochTimezoneJson, ZonedDateTime.class);
@@ -217,7 +245,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenIsoZonedTimeFields_whenUsingIsoMapperAdjusting_thenDeserializeWithContextTimeZone() throws JsonProcessingException {
+    void givenIsoZonedTimeFields_whenUsingIsoMapperAdjusting_thenDeserializeWithContextTimeZone() {
         String isoTimezoneJson = "\"2045-06-28T10:10:10+02:00\"";
 
         ZonedDateTime zonedDateTimeFromIso = isoObjectMapper.readValue(isoTimezoneJson, ZonedDateTime.class);
@@ -231,7 +259,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenIsoZonedTimeFields_whenUsingIsoMapperNotAdjusting_thenDeserializeWithDateTimeZone() throws JsonProcessingException {
+    void givenIsoZonedTimeFields_whenUsingIsoMapperNotAdjusting_thenDeserializeWithDateTimeZone() {
         String isoTimezoneJson = "\"2045-06-28T10:10:10+02:00\"";
 
         ZonedDateTime zonedDateTimeFromIso = isoObjectMapperNotAdjustingZone.readValue(isoTimezoneJson, ZonedDateTime.class);
@@ -247,7 +275,7 @@ class JacksonUnitTest {
     // Field-level formatting with annotations
 
     @Test
-    void whenUsingJsonFormatAnnotation_thenDeserializeInSpecificFormat() throws JsonProcessingException {
+    void whenUsingJsonFormatAnnotation_thenDeserializeInSpecificFormat() {
         String json = """
             {
                 "date":"01-03-2045",
@@ -258,14 +286,14 @@ class JacksonUnitTest {
 
         assertEquals(LocalDate.of(2045, 3, 1), dateWrapper.getDate());
         assertNotEquals(ZoneOffset.of("+02:00"), dateWrapper.getZonedDateTime()
-            .getZone());
+                .getZone());
         assertEquals(ZoneId.of("Europe/Berlin"), dateWrapper.getZonedDateTime()
-            .getZone());
+                .getZone());
         assertEquals(ZonedDateTime.of(2045, 6, 28, 10, 10, 10, 0, ZoneId.of("Europe/Berlin")), dateWrapper.getZonedDateTime());
     }
 
     @Test
-    void givenDataWrapper_whenUsingNotAdjustingTzMapper_thenClassSerializedAsPerFieldsFormat() throws JsonProcessingException {
+    void givenDataWrapper_whenUsingNotAdjustingTzMapper_thenClassSerializedAsPerFieldsFormat() {
         LocalDate date = LocalDate.of(2045, 3, 1);
         ZonedDateTime zonedDateTime = ZonedDateTime.of(2045, 6, 28, 10, 10, 10, 0, ZoneId.of("Europe/Berlin"));
 
@@ -279,27 +307,27 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenSerializingVariousJavaTimeTypes_thenObserveFormats() throws JsonProcessingException {
+    void whenSerializingVariousJavaTimeTypes_thenObserveFormats() {
         LocalTime localTime = LocalTime.of(15, 45, 30, 123_000_000); // 15:45:30.123
         OffsetDateTime offsetDateTime = OffsetDateTime.of(2045, 6, 28, 10, 10, 10, 0, ZoneOffset.ofHours(-2));
         Instant instant = Instant.parse("2045-06-28T10:10:10-02:00");
         Duration duration = Duration.of(90, ChronoUnit.MINUTES); // PT1H30M - 1 hour 30 minutes
         Period period = Period.of(2, 6, 15); // P2Y6M15D - 2 years, 6 months, and 15 days.
 
-        // --- Using defaultObjectMapper (array or numeric output) ---
-        String localTimeDefault = defaultObjectMapper.writeValueAsString(localTime);
-        String offsetDateTimeDefault = defaultObjectMapper.writeValueAsString(offsetDateTime);
-        String instantDefault = defaultObjectMapper.writeValueAsString(instant);
-        String durationDefault = defaultObjectMapper.writeValueAsString(duration);
-        String periodDefault = defaultObjectMapper.writeValueAsString(period);
+        // --- Using timestampObjectMapper (array or numeric output) ---
+        String localTimeTimestamp = timestampObjectMapper.writeValueAsString(localTime);
+        String offsetDateTimeTimestamp = timestampObjectMapper.writeValueAsString(offsetDateTime);
+        String instantTimestamp = timestampObjectMapper.writeValueAsString(instant);
+        String durationTimestamp = timestampObjectMapper.writeValueAsString(duration);
+        String periodTimestamp = timestampObjectMapper.writeValueAsString(period);
 
-        System.out.println("OffsetDateTime (default): " + offsetDateTimeDefault);
+        System.out.println("OffsetDateTime (timestamp): " + offsetDateTimeTimestamp);
 
-        assertEquals("[15,45,30,123000000]", localTimeDefault);
-        assertEquals("2382264610.000000000", offsetDateTimeDefault);
-        assertEquals("2382264610.000000000", instantDefault);
-        assertEquals("5400.000000000", durationDefault);
-        assertEquals("\"P2Y6M15D\"", periodDefault);
+        assertEquals("[15,45,30,123000000]", localTimeTimestamp);
+        assertEquals("2382264610.000000000", offsetDateTimeTimestamp);
+        assertEquals("2382264610.000000000", instantTimestamp);
+        assertEquals("5400.000000000", durationTimestamp);
+        assertEquals("\"P2Y6M15D\"", periodTimestamp);
 
         // --- Using isoObjectMapperNotAdjustingZone (ISO strings, no zone context) ---
         String localTimeIso = isoObjectMapperNotAdjustingZone.writeValueAsString(localTime);
@@ -311,14 +339,14 @@ class JacksonUnitTest {
         assertEquals("\"15:45:30.123\"", localTimeIso);
         assertEquals("\"2045-06-28T10:10:10-02:00\"", offsetDateTimeIso);
         assertEquals("\"2045-06-28T12:10:10Z\"", instantIso);
-        assertEquals("\"PT1H30M\"", durationIso); // Note we're disabling SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS for this
+        assertEquals("\"PT1H30M\"", durationIso); // Note we're disabling DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS for this
         assertEquals("\"P2Y6M15D\"", periodIso);
     }
 
     @Test
-    void whenUsingLegacyDateType_thenSerializeInSpecificFormat() throws JsonProcessingException, ParseException {
+    void whenUsingLegacyDateType_thenSerializeInSpecificFormat() throws ParseException {
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        ObjectMapper objectMapper = new ObjectMapper().setDateFormat(df);
+        JsonMapper objectMapper = JsonMapper.builder().defaultDateFormat(df).build();
 
         Date date = df.parse("2045/06/01 10:00:00");
         String json = objectMapper.writeValueAsString(date);
