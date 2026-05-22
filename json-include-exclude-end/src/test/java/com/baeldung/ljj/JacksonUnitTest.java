@@ -18,7 +18,7 @@ class JacksonUnitTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void whenUsingJsonIncludeAtFieldLevel_thenFieldOmitted() throws Exception {
+    void whenUsingJsonIncludeAtFieldLevel_thenFieldOmitted() {
         Campaign campaign = new Campaign(null, "My Campaign", "Description of campaign 01");
         String json = objectMapper.writeValueAsString(campaign);
 
@@ -26,7 +26,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonIncludeAtClassLevelWithEmptyOption_thenOmitEmptyField() throws Exception {
+    void whenUsingJsonIncludeAtClassLevelWithEmptyOption_thenOmitEmptyField() {
         Campaign campaign = new Campaign("C01", "", "Description of campaign 01");
         String json = objectMapper.writeValueAsString(campaign);
 
@@ -34,7 +34,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonIgnore_thenOmitTheAnnotatedField() throws Exception {
+    void whenUsingJsonIgnore_thenOmitTheAnnotatedField() {
         Campaign campaign = new Campaign("C01", "My Campaign", "Description of campaign 01");
         campaign.setClosed(true);
         String json = objectMapper.writeValueAsString(campaign);
@@ -43,7 +43,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonPropertyWithReadOption_thenOmitEmptyField() throws Exception {
+    void whenUsingJsonPropertyWithReadOption_thenOmitEmptyField() {
         Campaign campaign = new Campaign("C01", "My Campaign", "Description of campaign 01");
         String json = objectMapper.writeValueAsString(campaign);
 
@@ -51,7 +51,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonIgnorePropertiesAtClassLevel_thenOmitSpecifiedFields() throws Exception {
+    void whenUsingJsonIgnorePropertiesAtClassLevel_thenOmitSpecifiedFields() {
         PrivateCampaign campaign = new PrivateCampaign("PC01", "My Private Campaign", "Description of private campaign 01");
         String json = objectMapper.writeValueAsString(campaign);
 
@@ -60,7 +60,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonIgnorePropertiesAtClassLevel_thenOmitSpecifiedFieldsDuringSerializationAndReplaceWithDefault() throws Exception {
+    void whenUsingJsonIgnorePropertiesAtClassLevel_thenOmitSpecifiedFieldsDuringSerializationAndReplaceWithDefault() {
         String json = """
                 {"code": "PC01", "name": "My Private Campaign", "description": "Description of private campaign 01", "tasks": [], "closed": true}
                 """;
@@ -71,7 +71,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonIncludePropertiesAtClassLevel_thenOmitNonSpecifiedFields() throws Exception {
+    void whenUsingJsonIncludePropertiesAtClassLevel_thenOmitNonSpecifiedFields() {
         PublicCampaign publicCampaign = new PublicCampaign("PUC01", "My Public Campaign", "Description of public campaign 01");
         String json = objectMapper.writeValueAsString(publicCampaign);
 
@@ -80,7 +80,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenUsingJsonIncludePropertiesAtClassLevel_thenOmitNonSpecifiedFieldsDuringDeserialization() throws Exception {
+    void whenUsingJsonIncludePropertiesAtClassLevel_thenOmitNonSpecifiedFieldsDuringDeserialization() {
         String json = """
                 {"code": "PUC01", "name": "My Public Campaign", "description": "Description of public campaign 01"}
                 """;
