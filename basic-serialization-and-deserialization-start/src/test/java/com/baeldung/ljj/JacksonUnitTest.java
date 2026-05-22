@@ -1,6 +1,6 @@
 package com.baeldung.ljj;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 class JacksonUnitTest {
 

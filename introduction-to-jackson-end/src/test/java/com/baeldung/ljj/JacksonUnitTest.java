@@ -13,7 +13,7 @@ class JacksonUnitTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void whenSerializingCampaign_thenCorrectJsonGenerated() throws Exception {
+    void whenSerializingCampaign_thenCorrectJsonGenerated() {
         Campaign campaign = new Campaign("C001", "Campaign 1", "Serialization");
         String jsonResult = objectMapper.writeValueAsString(campaign);
 
@@ -23,7 +23,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void whenDeserializingJson_thenCorrectCampaignObjectGenerated() throws Exception {
+    void whenDeserializingJson_thenCorrectCampaignObjectGenerated() {
         String jsonCampaign = """
                 {
                   "code": "%s",

@@ -1,10 +1,8 @@
 package com.baeldung.ljj;
 
 import com.baeldung.ljj.domain.model.Campaign;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
-import org.junit.jupiter.api.BeforeEach;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -21,7 +19,7 @@ public class JacksonUnitTest {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    public void whenSerializingCampaign_thenCorrectJson() throws JsonProcessingException {
+    public void whenSerializingCampaign_thenCorrectJson() {
 
         String json = objectMapper.writeValueAsString(campaign);
 
@@ -53,7 +51,7 @@ public class JacksonUnitTest {
     }
 
     @Test
-    public void whenSerializingCampaignList_thenCorrectJsonArray() throws JsonProcessingException {
+    public void whenSerializingCampaignList_thenCorrectJsonArray() {
 
         List<Campaign> campaigns = List.of(new Campaign("CAMP1", "CampaignName", "Description"), new Campaign("CAMP2", "SecondCampaign", "SecondDescription"));
 
@@ -67,7 +65,7 @@ public class JacksonUnitTest {
     }
 
     @Test
-    public void whenDeserializingJsonToCampaign_thenCorrectObject() throws JsonProcessingException {
+    public void whenDeserializingJsonToCampaign_thenCorrectObject() {
 
         String json = """
             {
@@ -120,7 +118,7 @@ public class JacksonUnitTest {
     }
 
     @Test
-    public void whenDeserializingJsonArrayToList_thenCorrectList() throws JsonProcessingException {
+    public void whenDeserializingJsonArrayToList_thenCorrectList() {
 
         String jsonArray = """
                 [

@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <description>Learn JSON with Jackson - ObjectMapper Configuration - End</description>
+    <description>Learn JSON with Jackson - JsonMapper Configuration - End</description>
 
     <groupId>com.baeldung</groupId>
-    <artifactId>objectmapper-configuration-end</artifactId>
+    <artifactId>jsonmapper-configuration-end</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -19,7 +19,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
@@ -51,6 +51,6 @@
 
         <junit-jupiter.version>5.12.2</junit-jupiter.version>
         <maven-surefire.version>3.5.3</maven-surefire.version>
-        <jackson.version>2.19.0</jackson.version>
+        <jackson.version>3.1.0</jackson.version>
     </properties>
 </project>

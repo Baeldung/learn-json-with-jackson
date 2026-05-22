@@ -14,8 +14,8 @@
     <modules>
         <module>introduction-to-jackson-start</module>
         <module>introduction-to-jackson-end</module>
-        <module>objectmapper-configuration-start</module>
-        <module>objectmapper-configuration-end</module>
+        <module>jsonmapper-configuration-start</module>
+        <module>jsonmapper-configuration-end</module>
         <module>basic-serialization-and-deserialization-start</module>
         <module>basic-serialization-and-deserialization-end</module>
     </modules>

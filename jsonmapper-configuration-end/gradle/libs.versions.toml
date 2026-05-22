@@ -1,9 +1,9 @@
 [versions]
-com-fasterxml-jackson-core-jackson-databind = "2.19.0"
+tools-jackson-core-jackson-databind = "3.1.0"
 org-junit-jupiter-junit-jupiter = "5.12.2"
 org-junit-platform-junit-platform-launcher = "1.12.2"
 
 [libraries]
-com-fasterxml-jackson-core-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "com-fasterxml-jackson-core-jackson-databind" }
+tools-jackson-core-jackson-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "tools-jackson-core-jackson-databind" }
 org-junit-jupiter-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "org-junit-jupiter-junit-jupiter" }
 org-junit-platform-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "org-junit-platform-junit-platform-launcher" }
