@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 import com.baeldung.ljj.domain.model.Task;
 import com.baeldung.ljj.domain.model.TaskStatus;
-import tools.jackson.core.JacksonException;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.json.JsonMapper;
 
@@ -27,7 +26,7 @@ class JacksonUnitTest {
     Task task2 = new Task("T2", "Task 2", "Description of Task 2", null, TaskStatus.TO_DO, null);
 
     @Test
-    void givenListOfTasks_whenSerializing_thenJsonArrayPreservesOrder() throws JacksonException {
+    void givenListOfTasks_whenSerializing_thenJsonArrayPreservesOrder() {
 
         List<Task> tasks = List.of(task1, task2);
         String json = objectMapper.writeValueAsString(tasks);
@@ -39,7 +38,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenJsonTaskArray_whenDeserializingToListOfTasks_thenCorrect() throws Exception {
+    void givenJsonTaskArray_whenDeserializingToListOfTasks_thenCorrect() {
 
         String json = """
                 [
@@ -60,7 +59,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenSetOfTasks_whenSerializing_thenJsonArrayWithoutOrderGuarantee() throws Exception {
+    void givenSetOfTasks_whenSerializing_thenJsonArrayWithoutOrderGuarantee() {
 
         Set<Task> tasks = new HashSet<>();
         tasks.add(task1);
@@ -72,7 +71,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenJsonTaskArray_whenDeserializingToSet_thenOk() throws Exception {
+    void givenJsonTaskArray_whenDeserializingToSet_thenOk() {
         String json = """
                 [
                     {"code":"T1","name":"Task 1","description":"Description of Task 1","dueDate":null,"status":"TO_DO","campaign":null},
@@ -92,7 +91,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenMapOfTasks_whenSerializing_thenOk() throws Exception {
+    void givenMapOfTasks_whenSerializing_thenOk() {
         Map<String, Task> byCode = new LinkedHashMap<>();
         byCode.put("T1", task1);
         byCode.put("T2", task2);
@@ -105,7 +104,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenJson_whenDeserializingToMap_thenKeysAndValuesAreRestored() throws Exception {
+    void givenJson_whenDeserializingToMap_thenKeysAndValuesAreRestored() {
         String json = """
                 {
                   "T1": { "code": "T1", "name": "Task 1", "description": "Task 1 description", "status": "TO_DO" },
@@ -124,7 +123,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenMapOfLists_whenSerializing_thenNestedShapeIsHandled() throws Exception {
+    void givenMapOfLists_whenSerializing_thenNestedShapeIsHandled() {
         Map<String, List<Task>> groups = new LinkedHashMap<>();
         groups.put("todo", List.of(task1, task2));
         groups.put("empty", Collections.emptyList());
@@ -137,7 +136,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenMapOfLists_whenDeserializing_thenNestedShapeIsHandled() throws Exception {
+    void givenMapOfLists_whenDeserializing_thenNestedShapeIsHandled() {
         String json = """
                 {
                     "todo": [

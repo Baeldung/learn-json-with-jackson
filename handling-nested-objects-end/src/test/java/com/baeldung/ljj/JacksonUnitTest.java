@@ -20,7 +20,7 @@ class JacksonUnitTest {
     final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void givenCampaignWithTasks_whenSerialize_thenNestedArrayPresent() throws Exception {
+    void givenCampaignWithTasks_whenSerialize_thenNestedArrayPresent() {
         // given
         Campaign campaign = new Campaign("C100", "Campaign 100", "Nested example");
         Task t1 = new Task("T1", "Task 1", "First", null, TaskStatus.TO_DO, null);
@@ -43,7 +43,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenCampaignJsonString_whenDeserialize_thenCampaignAndTasksObjects() throws Exception {
+    void givenCampaignJsonString_whenDeserialize_thenCampaignAndTasksObjects() {
         // given
         String json = """
                 {
@@ -68,7 +68,7 @@ class JacksonUnitTest {
 
     // Uncomment to see the example of '6.1. Easiest Fix: Ignore the Back-Reference With @JsonIgnore'
     // @Test
-    void givenCampaignIgnoringBackLink_whenSerialize_thenOk() throws Exception {
+    void givenCampaignIgnoringBackLink_whenSerialize_thenOk() {
         // given
         Campaign campaign = new Campaign("C400", "Campaign 400", "Nested example");
         Task t1 = new Task("T1", "Task 1", "First", null, TaskStatus.TO_DO, null);
@@ -100,7 +100,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenCampaignWithBidirectionalLinksHandled_wheSerialize_thenOK() throws Exception {
+    void givenCampaignWithBidirectionalLinksHandled_wheSerialize_thenOK() {
         // given
         Campaign campaign = new Campaign("C400", "Campaign 400", "Nested example");
         Task t1 = new Task("T1", "Task 1", "First", null, TaskStatus.TO_DO, null);
