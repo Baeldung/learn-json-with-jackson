@@ -27,10 +27,11 @@ class JacksonUnitTest {
         System.out.println(json);
 
         // Then
-        /* Changing the getter name and no annotations on field or getter 
-        assertFalse(json.contains("\"code\""));
-        assertTrue(json.contains("\"theCode\""));
-        */
+        /*
+         * Changing the getter name and no annotations on field or getter
+         * assertFalse(json.contains("\"code\""));
+         * assertTrue(json.contains("\"theCode\""));
+         */
         assertTrue(json.contains("\"code\":\"code01\""));
     }
 
@@ -52,8 +53,8 @@ class JacksonUnitTest {
     void givenPropertyWithCustomName_whenDeserializing_thenFieldIsCorrectlyDeserialized() {
         // Given
         String json = """
-                {"code":"T101","name":"Rename","description":"Custom property name","tasks":[],"is_closed":false}
-                """;
+            {"code":"T101","name":"Rename","description":"Custom property name","tasks":[],"is_closed":false}
+            """;
 
         // When
         Campaign renameCampaign = objectMapper.readValue(json, Campaign.class);
@@ -95,7 +96,7 @@ class JacksonUnitTest {
 
         // Then
         String expectedJson = """
-                {"code":"t102","name":"Campaign102","description":"Big Campaign","is_closed":false,"tasks":["Task: code= T101, name=Task101, description=JSON value example."]}""";
+            {"code":"t102","name":"Campaign102","description":"Big Campaign","is_closed":false,"tasks":["Task: code= T101, name=Task101, description=JSON value example."]}""";
         assertEquals(expectedJson, json);
     }
 }

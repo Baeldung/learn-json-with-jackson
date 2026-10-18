@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TaskStatusJsonValue {
+
     //@formatter:off
     TO_DO("To Do"),
     IN_PROGRESS("In Progress"),

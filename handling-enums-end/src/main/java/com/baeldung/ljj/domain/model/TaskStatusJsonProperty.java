@@ -3,6 +3,7 @@ package com.baeldung.ljj.domain.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum TaskStatusJsonProperty {
+
     //@formatter:off
     TO_DO("To Do"),
     IN_PROGRESS("In Progress"),

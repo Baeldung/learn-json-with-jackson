@@ -19,7 +19,7 @@ class JacksonUnitTest {
 
     @Test
     void givenCampaignJsonString_whenReadValueByObjectMapper_thenConvertedToCampaignObject() {
-        //given
+        // given
         String campaignJson = "{\"code\": \"C1\", \"name\": \"Campaign 1\", \"description\": \"The description of Campaign 1\"}";
 
         // when
@@ -34,11 +34,11 @@ class JacksonUnitTest {
 
     @Test
     void givenCampaignJsonFile_whenReadValueByObjectMapper_thenConvertedToCampaignObject() throws IOException {
-        //given
+        // given
 
         // when
         Campaign campaign = defaultObjectMapper.readValue(getClass().getClassLoader()
-                .getResourceAsStream("campaign.json"), Campaign.class);
+            .getResourceAsStream("campaign.json"), Campaign.class);
 
         // then
         assertNotNull(campaign);

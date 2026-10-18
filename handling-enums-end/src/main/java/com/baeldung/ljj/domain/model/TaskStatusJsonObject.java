@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TaskStatusJsonObject {
+
     //@formatter:off
     TO_DO("To Do"),
     IN_PROGRESS("In Progress"),

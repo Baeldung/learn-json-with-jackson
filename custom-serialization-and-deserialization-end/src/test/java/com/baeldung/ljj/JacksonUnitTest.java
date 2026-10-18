@@ -27,9 +27,9 @@ class JacksonUnitTest {
         module.addSerializer(Campaign.class, new CampaignToCodeSerializer());
 
         JsonMapper mapper = JsonMapper.builder()
-                .addModule(module)
-                .enable(SerializationFeature.INDENT_OUTPUT)
-                .build();
+            .addModule(module)
+            .enable(SerializationFeature.INDENT_OUTPUT)
+            .build();
 
         Campaign campaign = new Campaign("C1", "Campaign one", "This is Campaign one");
         Task task = new Task("T1", "Task one", "This is Task one", LocalDate.of(2050, 1, 1), TaskStatus.TO_DO, campaign);
@@ -42,33 +42,33 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenJsonWithCustomStatus_whenDeserializing_thenCustomDeserializerUsed() {
+    void givenJsonWithCustomCampaign_whenDeserializing_thenCustomDeserializerUsed() {
         SimpleModule module = new SimpleModule();
         module.addDeserializer(Campaign.class, new CodeToCampaignDeserializer());
 
         JsonMapper mapper = JsonMapper.builder()
-                .addModule(module)
-                .build();
+            .addModule(module)
+            .build();
 
         String json = """
-                  {
-                  "code" : "T1",
-                  "name" : "Task one",
-                  "description" : "This is Task one",
-                  "dueDate" : [ 2050, 1, 1 ],
-                  "status" : "TO_DO",
-                  "campaign" : "C1"
-                }
-                """;
+              {
+              "code" : "T1",
+              "name" : "Task one",
+              "description" : "This is Task one",
+              "dueDate" : [ 2050, 1, 1 ],
+              "status" : "TO_DO",
+              "campaign" : "C1"
+            }
+            """;
 
         Task task = mapper.readValue(json, Task.class);
         assertNotNull(task.getCampaign());
         assertEquals("C1", task.getCampaign()
-                .getCode());
+            .getCode());
         assertNull(task.getCampaign()
-                .getName());
+            .getName());
         assertNull(task.getCampaign()
-                .getDescription());
+            .getDescription());
     }
 
     @Test
@@ -81,7 +81,7 @@ class JacksonUnitTest {
         String json = mapper.writeValueAsString(task);
 
         assertTrue(json.contains("\"campaign\":\"C1\""));
-        assertFalse(json.contains("\"name\":\"Campaign 1\""));
+        assertFalse(json.contains("\"name\":\"Campaign one\""));
 
         System.out.println(json);
     }
@@ -90,30 +90,30 @@ class JacksonUnitTest {
     void givenJsonWithCustomCampaign_whenDeserializing_thenAnnotationDeserializerUsed() {
         JsonMapper mapper = JsonMapper.builder().build();
         String json = """
-                  {
-                  "code" : "T1",
-                  "name" : "Task one",
-                  "description" : "This is Task one",
-                  "dueDate" : [ 2050, 1, 1 ],
-                  "status" : "TO_DO",
-                  "campaign" : "C1"
-                }
-                """;
+              {
+              "code" : "T1",
+              "name" : "Task one",
+              "description" : "This is Task one",
+              "dueDate" : [ 2050, 1, 1 ],
+              "status" : "TO_DO",
+              "campaign" : "C1"
+            }
+            """;
         Task task = mapper.readValue(json, Task.class);
         assertNotNull(task.getCampaign());
         assertEquals("C1", task.getCampaign()
-                .getCode());
+            .getCode());
         assertNull(task.getCampaign()
-                .getName());
+            .getName());
         assertNull(task.getCampaign()
-                .getDescription());
+            .getDescription());
     }
 
     @Test
     void givenAnnotationSerializerAndDeserializer_whenWorkingWithStandaloneCampaign_thenCustomSerializerSerializerNotUsed() {
         JsonMapper mapper = JsonMapper.builder()
-                .enable(SerializationFeature.INDENT_OUTPUT)
-                .build();
+            .enable(SerializationFeature.INDENT_OUTPUT)
+            .build();
         Campaign campaign = new Campaign("C2", "Campaign two", "This is Campaign two.");
 
         // serializing

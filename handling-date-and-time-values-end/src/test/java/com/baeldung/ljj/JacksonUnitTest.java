@@ -35,22 +35,22 @@ class JacksonUnitTest {
 
     final JsonMapper defaultObjectMapper = JsonMapper.builder().build();
     final JsonMapper timestampObjectMapper = JsonMapper.builder()
-            .enable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .enable(DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
-            .build();
+        .enable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
+        .enable(DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
+        .build();
     final JsonMapper isoObjectMapper = JsonMapper.builder()
-            .defaultTimeZone(TimeZone.getTimeZone("America/New_York"))
-            .build();
+        .defaultTimeZone(TimeZone.getTimeZone("America/New_York"))
+        .build();
     final JsonMapper isoObjectMapperNotAdjustingZone = JsonMapper.builder()
-            .disable(DateTimeFeature.WRITE_DATES_WITH_CONTEXT_TIME_ZONE)
-            .disable(DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
-            .disable(DateTimeFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
-            .defaultTimeZone(TimeZone.getTimeZone("America/New_York"))
-            .build();
+        .disable(DateTimeFeature.WRITE_DATES_WITH_CONTEXT_TIME_ZONE)
+        .disable(DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
+        .disable(DateTimeFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+        .defaultTimeZone(TimeZone.getTimeZone("America/New_York"))
+        .build();
 
     @Test
     void givenCampaignJsonString_whenReadValueByObjectMapper_thenConvertedToCampaignObject() {
-        //given
+        // given
         String campaignJson = "{\"code\": \"C1\", \"name\": \"Campaign 1\", \"description\": \"The description of Campaign 1\"}";
 
         // when
@@ -65,11 +65,11 @@ class JacksonUnitTest {
 
     @Test
     void givenCampaignJsonFile_whenReadValueByObjectMapper_thenConvertedToCampaignObject() throws IOException {
-        //given
+        // given
 
         // when
         Campaign campaign = defaultObjectMapper.readValue(getClass().getClassLoader()
-                .getResourceAsStream("campaign.json"), Campaign.class);
+            .getResourceAsStream("campaign.json"), Campaign.class);
 
         // then
         assertNotNull(campaign);
@@ -217,7 +217,7 @@ class JacksonUnitTest {
     }
 
     @Test
-    void givenZonedDateTime_whenSerializingNowAdjustingTZ_thenJSONFormattedUsingDateTimeTz() {
+    void givenZonedDateTime_whenSerializingNotAdjustingTZ_thenJSONFormattedUsingDateTimeTz() {
         ZonedDateTime zonedDateTime = ZonedDateTime.of(2045, 6, 28, 10, 10, 10, 0, ZoneId.of("Europe/Berlin"));
         ZonedDateTime sameZonedDateTimeinUTC = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
 
@@ -286,9 +286,9 @@ class JacksonUnitTest {
 
         assertEquals(LocalDate.of(2045, 3, 1), dateWrapper.getDate());
         assertNotEquals(ZoneOffset.of("+02:00"), dateWrapper.getZonedDateTime()
-                .getZone());
+            .getZone());
         assertEquals(ZoneId.of("Europe/Berlin"), dateWrapper.getZonedDateTime()
-                .getZone());
+            .getZone());
         assertEquals(ZonedDateTime.of(2045, 6, 28, 10, 10, 10, 0, ZoneId.of("Europe/Berlin")), dateWrapper.getZonedDateTime());
     }
 

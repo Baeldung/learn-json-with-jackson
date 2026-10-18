@@ -62,8 +62,8 @@ class JacksonUnitTest {
     @Test
     void whenUsingJsonIgnorePropertiesAtClassLevel_thenOmitSpecifiedFieldsDuringSerializationAndReplaceWithDefault() {
         String json = """
-                {"code": "PC01", "name": "My Private Campaign", "description": "Description of private campaign 01", "tasks": [], "closed": true}
-                """;
+            {"code": "PC01", "name": "My Private Campaign", "description": "Description of private campaign 01", "tasks": [], "closed": true}
+            """;
         PrivateCampaign campaign = objectMapper.readValue(json, PrivateCampaign.class);
 
         assertNull(campaign.getName());
@@ -82,8 +82,8 @@ class JacksonUnitTest {
     @Test
     void whenUsingJsonIncludePropertiesAtClassLevel_thenOmitNonSpecifiedFieldsDuringDeserialization() {
         String json = """
-                {"code": "PUC01", "name": "My Public Campaign", "description": "Description of public campaign 01"}
-                """;
+            {"code": "PUC01", "name": "My Public Campaign", "description": "Description of public campaign 01"}
+            """;
         PublicCampaign publicCampaign = objectMapper.readValue(json, PublicCampaign.class);
 
         assertEquals("My Public Campaign", publicCampaign.getName());

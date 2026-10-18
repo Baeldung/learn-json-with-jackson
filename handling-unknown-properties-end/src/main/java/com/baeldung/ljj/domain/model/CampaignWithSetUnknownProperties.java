@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CampaignWithSetUnknownProperties extends Campaign {
+
     private Map<String, Object> unknownProperties = new HashMap<>();
 
     @JsonAnySetter
