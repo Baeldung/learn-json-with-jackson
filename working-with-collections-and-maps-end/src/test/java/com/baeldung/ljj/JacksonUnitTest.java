@@ -41,11 +41,11 @@ class JacksonUnitTest {
     void givenJsonTaskArray_whenDeserializingToListOfTasks_thenCorrect() {
 
         String json = """
-                [
-                    {"code":"T1","name":"Task 1","description":"Description of Task 1","dueDate":null,"status":"TO_DO","campaign":null},
-                    {"code":"T2","name":"Task 2","description":"Description of Task 2","dueDate":null,"status":"TO_DO","campaign":null}
-                ]
-                """;
+            [
+                {"code":"T1","name":"Task 1","description":"Description of Task 1","dueDate":null,"status":"TO_DO","campaign":null},
+                {"code":"T2","name":"Task 2","description":"Description of Task 2","dueDate":null,"status":"TO_DO","campaign":null}
+            ]
+            """;
 
         List<Task> tasks = objectMapper.readValue(json, new TypeReference<List<Task>>() {
         });
@@ -53,9 +53,9 @@ class JacksonUnitTest {
         assertTrue(tasks instanceof ArrayList);
         assertEquals(2, tasks.size());
         assertEquals("T1", tasks.get(0)
-                .getCode());
+            .getCode());
         assertEquals("T2", tasks.get(1)
-                .getCode());
+            .getCode());
     }
 
     @Test
@@ -73,11 +73,11 @@ class JacksonUnitTest {
     @Test
     void givenJsonTaskArray_whenDeserializingToSet_thenOk() {
         String json = """
-                [
-                    {"code":"T1","name":"Task 1","description":"Description of Task 1","dueDate":null,"status":"TO_DO","campaign":null},
-                    {"code":"T2","name":"Task 2","description":"Description of Task 2","dueDate":null,"status":"TO_DO","campaign":null}
-                ]
-                """;
+            [
+                {"code":"T1","name":"Task 1","description":"Description of Task 1","dueDate":null,"status":"TO_DO","campaign":null},
+                {"code":"T2","name":"Task 2","description":"Description of Task 2","dueDate":null,"status":"TO_DO","campaign":null}
+            ]
+            """;
 
         Set<Task> tasks = objectMapper.readValue(json, new TypeReference<Set<Task>>() {
         });
@@ -85,9 +85,9 @@ class JacksonUnitTest {
         assertTrue(tasks instanceof HashSet);
         assertEquals(2, tasks.size());
         assertTrue(tasks.stream()
-                .anyMatch(task -> "T1".equals(task.getCode())));
+            .anyMatch(task -> "T1".equals(task.getCode())));
         assertTrue(tasks.stream()
-                .anyMatch(task -> "T2".equals(task.getCode())));
+            .anyMatch(task -> "T2".equals(task.getCode())));
     }
 
     @Test
@@ -106,11 +106,11 @@ class JacksonUnitTest {
     @Test
     void givenJson_whenDeserializingToMap_thenKeysAndValuesAreRestored() {
         String json = """
-                {
-                  "T1": { "code": "T1", "name": "Task 1", "description": "Task 1 description", "status": "TO_DO" },
-                  "T2": { "code": "T2", "name": "Task 2", "description": "Task 2 description", "status": "TO_DO" }
-                }
-                """;
+            {
+              "T1": { "code": "T1", "name": "Task 1", "description": "Task 1 description", "status": "TO_DO" },
+              "T2": { "code": "T2", "name": "Task 2", "description": "Task 2 description", "status": "TO_DO" }
+            }
+            """;
 
         Map<String, Task> tasks = objectMapper.readValue(json, new TypeReference<Map<String, Task>>() {
         });
@@ -119,7 +119,7 @@ class JacksonUnitTest {
         assertTrue(tasks.containsKey("T1"));
         assertTrue(tasks.containsKey("T2"));
         assertEquals("Task 2", tasks.get("T2")
-                .getName());
+            .getName());
     }
 
     @Test
@@ -138,22 +138,22 @@ class JacksonUnitTest {
     @Test
     void givenMapOfLists_whenDeserializing_thenNestedShapeIsHandled() {
         String json = """
-                {
-                    "todo": [
-                      { "code": "T1", "name": "Task 1", "description": "Task 1 description", "status": "TO_DO" },
-                      { "code": "T2", "name": "Task 2", "description": "Task 2 description", "status": "TO_DO" }
-                    ],
-                    "empty": []
-                  }
-                """;
+            {
+                "todo": [
+                  { "code": "T1", "name": "Task 1", "description": "Task 1 description", "status": "TO_DO" },
+                  { "code": "T2", "name": "Task 2", "description": "Task 2 description", "status": "TO_DO" }
+                ],
+                "empty": []
+              }
+            """;
 
         Map<String, List<Task>> restored = objectMapper.readValue(json, new TypeReference<Map<String, List<Task>>>() {
         });
 
         assertEquals(2, restored.get("todo")
-                .size());
+            .size());
         assertTrue(restored.get("empty")
-                .isEmpty());
+            .isEmpty());
     }
 
 }

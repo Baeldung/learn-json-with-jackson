@@ -1,6 +1,7 @@
 package com.baeldung.ljj.domain.model;
 
 public class Address {
+
     private String street;
     private String city;
     private String postalCode;

@@ -19,10 +19,10 @@ class JacksonUnitTest {
     @Test
     void givenCampaign_whenSerializingWithSummaryView_thenOnlySummaryFieldsAreIncluded() {
         objectMapper = JsonMapper.builder()
-                .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
-                .build();
+            .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
+            .build();
         String json = objectMapper.writerWithView(Views.Summary.class)
-                .writeValueAsString(campaign);
+            .writeValueAsString(campaign);
 
         assertTrue(json.contains("\"code\""));
         assertTrue(json.contains("\"name\""));
@@ -34,10 +34,10 @@ class JacksonUnitTest {
     @Test
     void givenCampaign_whenSerializingWithDetailView_thenSummaryAndDetailFieldsAreIncluded() {
         objectMapper = JsonMapper.builder()
-                .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
-                .build();
+            .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
+            .build();
         String json = objectMapper.writerWithView(Views.Detail.class)
-                .writeValueAsString(campaign);
+            .writeValueAsString(campaign);
 
         assertTrue(json.contains("\"code\""));
         assertTrue(json.contains("\"name\""));
@@ -60,14 +60,14 @@ class JacksonUnitTest {
     @Test
     void givenFieldInMultipleViews_whenSerializingWithEachView_thenFieldIsIncluded() {
         objectMapper = JsonMapper.builder()
-                .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
-                .build();
+            .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
+            .build();
         String summaryJson = objectMapper.writerWithView(Views.Summary.class)
-                .writeValueAsString(campaign);
+            .writeValueAsString(campaign);
         assertTrue(summaryJson.contains("\"code\""));
 
         String internalJson = objectMapper.writerWithView(Views.Internal.class)
-                .writeValueAsString(campaign);
+            .writeValueAsString(campaign);
         assertTrue(internalJson.contains("\"code\""));
     }
 

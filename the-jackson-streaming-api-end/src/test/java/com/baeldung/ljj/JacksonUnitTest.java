@@ -20,19 +20,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class JacksonUnitTest {
 
     private static final String EXPECTED_JSON = """
-            {
-              "code" : "C-001",
-              "name" : "Campaign 1",
-              "tasks" : [ {
-                "code" : "T-001",
-                "name" : "Task 1",
-                "status" : "TO_DO"
-              }, {
-                "code" : "T-002",
-                "name" : "Task 2",
-                "status" : "IN_PROGRESS"
-              } ]
-            }""";
+        {
+          "code" : "C-001",
+          "name" : "Campaign 1",
+          "tasks" : [ {
+            "code" : "T-001",
+            "name" : "Task 1",
+            "status" : "TO_DO"
+          }, {
+            "code" : "T-002",
+            "name" : "Task 2",
+            "status" : "IN_PROGRESS"
+          } ]
+        }""";
 
     @Test
     void whenParsingTasksWithJsonParser_thenOnHoldTasksCountIsCorrect() throws IOException {
@@ -67,9 +67,9 @@ class JacksonUnitTest {
         File outputFile = new File("src/test/resources/campaign-with-tasks.json");
         JsonMapper jsonMapper = new JsonMapper();
         JsonGenerator jsonGenerator = jsonMapper
-                .writer()
-                .withDefaultPrettyPrinter()
-                .createGenerator(outputFile, JsonEncoding.UTF8);
+            .writer()
+            .withDefaultPrettyPrinter()
+            .createGenerator(outputFile, JsonEncoding.UTF8);
 
         jsonGenerator.writeStartObject();
         jsonGenerator.writeStringProperty("code", "C-001");
@@ -95,8 +95,8 @@ class JacksonUnitTest {
 
         String writtenJson = Files.readString(outputFile.toPath());
         assertEquals(
-                jsonMapper.readTree(EXPECTED_JSON),
-                jsonMapper.readTree(writtenJson));
+            jsonMapper.readTree(EXPECTED_JSON),
+            jsonMapper.readTree(writtenJson));
     }
 
 }

@@ -18,11 +18,14 @@ public class Task {
 
     private TaskStatus status;
 
-    // Uncomment the next line to see the example of '6.1. Easiest Fix: Ignore the Back-Reference With @JsonIgnore'
+    // Uncomment the next line to see the example of '6.1. Easiest Fix: Ignore the
+    // Back-Reference With @JsonIgnore'
     // @JsonIgnore
     // ---
-    // to see the example of 6.2. Keep The Relationship On Read: @JsonManagedReference / @JsonBackReference
-    // uncomment the following line, and comment out the @JsonIdentityInfo annotation. Similar changes needed in Campaign.java
+    // to see the example of 6.2. Keep The Relationship On Read:
+    // @JsonManagedReference / @JsonBackReference
+    // uncomment the following line, and comment out the @JsonIdentityInfo
+    // annotation. Similar changes needed in Campaign.java
     // @JsonBackReference
     private Campaign campaign;
 
@@ -88,8 +91,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task [code= " + code + "name=" + name + ", description=" + description + ", dueDate=" + dueDate + ", status=" + status
-                + ", campaign=" +
-                campaign + "]";
+        return "Task [code= " + code + "name=" + name + ", description=" + description + ", dueDate=" + dueDate + ", status=" + status + ", campaign=" +
+            campaign + "]";
     }
 }

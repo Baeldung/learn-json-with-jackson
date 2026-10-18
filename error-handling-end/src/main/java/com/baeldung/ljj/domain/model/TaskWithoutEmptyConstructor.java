@@ -17,7 +17,7 @@ public class TaskWithoutEmptyConstructor {
     private Campaign campaign;
 
     public TaskWithoutEmptyConstructor(String code, String name, String description, LocalDate dueDate, TaskStatus status,
-            Campaign campaign) {
+        Campaign campaign) {
         this.code = code;
         this.name = name;
         this.description = description;
@@ -77,6 +77,6 @@ public class TaskWithoutEmptyConstructor {
     @Override
     public String toString() {
         return "Task [code= " + code + "name=" + name + ", description=" + description + ", dueDate=" + dueDate +
-                ", status=" + status + ", campaign=" + campaign + "]";
+            ", status=" + status + ", campaign=" + campaign + "]";
     }
 }

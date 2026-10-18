@@ -1,6 +1,7 @@
 package com.baeldung.ljj.domain.model;
 
 public abstract class Worker {
+
     private int id;
     private String name;
 

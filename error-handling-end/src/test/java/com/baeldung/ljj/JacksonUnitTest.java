@@ -20,13 +20,13 @@ class JacksonUnitTest {
     void givenUnknownProperty_whenUsingDefaultMapper_thenFail() {
         JsonMapper mapper = JsonMapper.builder().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build();
         String json = """
-                {
-                    "code": "C2",
-                    "name": "Campaign 2",
-                    "description": "The description of Campaign 2",
-                    "budget": 100
-                }
-                """;
+            {
+                "code": "C2",
+                "name": "Campaign 2",
+                "description": "The description of Campaign 2",
+                "budget": 100
+            }
+            """;
         assertThrows(UnrecognizedPropertyException.class, () -> mapper.readValue(json, Campaign.class));
     }
 
@@ -34,13 +34,13 @@ class JacksonUnitTest {
     void givenMapperConfiguredToIgnoreUnknown_thenDeserializationSucceeds() {
         JsonMapper mapper = JsonMapper.builder().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build();
         String json = """
-                {
-                    "code": "C2",
-                    "name": "Campaign 2",
-                    "description": "The description of Campaign 2",
-                    "budget": 100
-                }
-                """;
+            {
+                "code": "C2",
+                "name": "Campaign 2",
+                "description": "The description of Campaign 2",
+                "budget": 100
+            }
+            """;
         Campaign campaign = mapper.readValue(json, Campaign.class);
         assertEquals("C2", campaign.getCode());
     }
@@ -49,16 +49,16 @@ class JacksonUnitTest {
     void givenObjectToArrayProperty_whenUsingDefaultMapper_thenFail() {
         JsonMapper mapper = JsonMapper.builder().build();
         String json = """
-                {
-                    "code": "C2",
-                    "name": "Campaign 2",
-                    "description": "The description of Campaign 2",
-                    "tasks": {
-                        "code": 101,
-                        "name": "Task A"
-                    }
+            {
+                "code": "C2",
+                "name": "Campaign 2",
+                "description": "The description of Campaign 2",
+                "tasks": {
+                    "code": 101,
+                    "name": "Task A"
                 }
-                """;
+            }
+            """;
         assertThrows(MismatchedInputException.class, () -> mapper.readValue(json, Campaign.class));
     }
 
@@ -66,16 +66,16 @@ class JacksonUnitTest {
     void givenObjectToArrayProperty_whenMapperConfiguredToAcceptObjectAsArray_thenSuccess() {
         JsonMapper mapper = JsonMapper.builder().enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY).build();
         String json = """
-                {
-                    "code": "C2",
-                    "name": "Campaign 2",
-                    "description": "The description of Campaign 2",
-                    "tasks": {
-                        "code": 101,
-                        "name": "Task A"
-                    }
+            {
+                "code": "C2",
+                "name": "Campaign 2",
+                "description": "The description of Campaign 2",
+                "tasks": {
+                    "code": 101,
+                    "name": "Task A"
                 }
-                """;
+            }
+            """;
         Campaign campaign = mapper.readValue(json, Campaign.class);
         assertEquals(1, campaign.getTasks().size());
     }
@@ -84,12 +84,12 @@ class JacksonUnitTest {
     void givenNoDefaultConstructor_whenUsingDefaultMapper_thenFail() {
         JsonMapper mapper = JsonMapper.builder().build();
         String json = """
-                {
-                    "code": "C2",
-                    "name": "Campaign 2",
-                    "description": "The description of Campaign 2"
-                }
-                """;
+            {
+                "code": "C2",
+                "name": "Campaign 2",
+                "description": "The description of Campaign 2"
+            }
+            """;
         assertThrows(InvalidDefinitionException.class, () -> mapper.readValue(json, TaskWithoutEmptyConstructor.class));
     }
 
@@ -97,12 +97,12 @@ class JacksonUnitTest {
     void givenDefaultConstructorAdded_whenUsingDefaultMapper_thenSuccess() {
         JsonMapper mapper = JsonMapper.builder().build();
         String json = """
-                {
-                    "code": "C2",
-                    "name": "Campaign 2",
-                    "description": "The description of Campaign 2"
-                }
-                """;
+            {
+                "code": "C2",
+                "name": "Campaign 2",
+                "description": "The description of Campaign 2"
+            }
+            """;
         Task task = mapper.readValue(json, Task.class);
         assertEquals("C2", task.getCode());
     }

@@ -16,8 +16,10 @@ public class Campaign {
 
     private String description;
 
-    // to see the example of 6.2. Keep The Relationship On Read: @JsonManagedReference / @JsonBackReference
-    // uncomment the following line, and comment out the @JsonIdentityInfo annotation. Similar changes needed in Task.java
+    // to see the example of 6.2. Keep The Relationship On Read:
+    // @JsonManagedReference / @JsonBackReference
+    // uncomment the following line, and comment out the @JsonIdentityInfo
+    // annotation. Similar changes needed in Task.java
     // @JsonManagedReference
     private Set<Task> tasks = new HashSet<>();
 
@@ -81,7 +83,6 @@ public class Campaign {
 
     @Override
     public String toString() {
-        return "Campaign [code=" + code + ", name=" + name + ", description=" + description + ", address=" + address + ", closed=" + closed
-                + "]";
+        return "Campaign [code=" + code + ", name=" + name + ", description=" + description + ", address=" + address + ", closed=" + closed + "]";
     }
 }

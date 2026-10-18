@@ -3,6 +3,7 @@ package com.baeldung.ljj.domain.model;
 import java.util.List;
 
 public class Team {
+
     private String name;
     private List<Worker> members;
 

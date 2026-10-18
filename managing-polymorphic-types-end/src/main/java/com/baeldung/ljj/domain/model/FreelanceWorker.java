@@ -1,6 +1,7 @@
 package com.baeldung.ljj.domain.model;
 
 public class FreelanceWorker extends Worker {
+
     private double hourlyRate;
 
     public FreelanceWorker() {

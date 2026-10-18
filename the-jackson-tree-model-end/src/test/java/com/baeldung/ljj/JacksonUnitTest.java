@@ -23,27 +23,27 @@ import tools.jackson.databind.node.ObjectNode;
 class JacksonUnitTest {
 
     private static final String CAMPAIGN_WITH_TASKS = """
+        {
+          "code": "C-001",
+          "nullableField": null,
+          "details": {
+            "name": "Campaign 1",
+            "description": "Campaign 1 description",
+            "closed": false
+          },
+          "tasks": [
             {
-              "code": "C-001",
-              "nullableField": null,
-              "details": {
-                "name": "Campaign 1",
-                "description": "Campaign 1 description",
-                "closed": false
-              },
-              "tasks": [
-                {
-                  "code": "T-001",
-                  "name": "Task 1",
-                  "status": "IN_PROGRESS"
-                },
-                {
-                  "code": "T-002",
-                  "name": "Task 2",
-                  "status": "IN_PROGRESS"
-                }
-              ]
-            }""";
+              "code": "T-001",
+              "name": "Task 1",
+              "status": "IN_PROGRESS"
+            },
+            {
+              "code": "T-002",
+              "name": "Task 2",
+              "status": "IN_PROGRESS"
+            }
+          ]
+        }""";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -97,19 +97,19 @@ class JacksonUnitTest {
 
         JsonNode firstTaskNode = tasksNode.get(0);
         assertEquals("T-001", firstTaskNode.path("code")
-                .asString());
+            .asString());
         assertEquals("Task 1", firstTaskNode.path("name")
-                .asString());
+            .asString());
         assertEquals(TaskStatus.IN_PROGRESS.toString(), firstTaskNode.path("status")
-                .asString());
+            .asString());
 
         JsonNode secondTaskNode = tasksNode.get(1);
         assertEquals("T-002", secondTaskNode.path("code")
-                .asString());
+            .asString());
         assertEquals("Task 2", secondTaskNode.path("name")
-                .asString());
+            .asString());
         assertEquals(TaskStatus.IN_PROGRESS.toString(), secondTaskNode.path("status")
-                .asString());
+            .asString());
     }
 
     @Test
@@ -120,9 +120,9 @@ class JacksonUnitTest {
         int inProgressCount = 0;
         for (JsonNode taskNode : tasksNode) {
             String status = taskNode.path("status")
-                    .asString();
+                .asString();
             if (TaskStatus.IN_PROGRESS.toString()
-                    .equals(status)) {
+                .equals(status)) {
                 inProgressCount++;
             }
         }
@@ -134,7 +134,7 @@ class JacksonUnitTest {
         JsonNode rootNode = objectMapper.readTree(CAMPAIGN_WITH_TASKS);
 
         JsonNode firstTaskNode = rootNode.path("tasks")
-                .get(0);
+            .get(0);
         Task firstTask = objectMapper.treeToValue(firstTaskNode, Task.class);
 
         assertEquals("T-001", firstTask.getCode());
@@ -145,8 +145,8 @@ class JacksonUnitTest {
     @Test
     void whenConvertingJsonNodeToIncorrectObject_thenExceptionThrown() {
         ObjectMapper strictMapper = JsonMapper.builder()
-                .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .build();
+            .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .build();
 
         JsonNode rootNode = strictMapper.readTree(CAMPAIGN_WITH_TASKS);
 
@@ -156,8 +156,8 @@ class JacksonUnitTest {
     @Test
     void whenConvertingJsonNodeWithUnknownPropertiesUsingLenientMapper_thenConversionSucceeds() {
         ObjectMapper lenientMapper = JsonMapper.builder()
-                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .build();
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .build();
 
         JsonNode rootNode = lenientMapper.readTree(CAMPAIGN_WITH_TASKS);
 
@@ -167,7 +167,7 @@ class JacksonUnitTest {
         assertEquals("C-001", campaign.getCode());
         assertNull(campaign.getDescription());
         assertFalse(campaign.getTasks()
-                .isEmpty());
+            .isEmpty());
     }
 
     @Test
@@ -176,11 +176,11 @@ class JacksonUnitTest {
 
         JsonNode detailsNode = rootNode.path("details");
         String campaignName = detailsNode.path("name")
-                .asString();
+            .asString();
         String campaignDescription = detailsNode.path("description")
-                .asString();
+            .asString();
         boolean campaignIsClosed = detailsNode.path("closed")
-                .asBoolean();
+            .asBoolean();
 
         ObjectNode rootObjectNode = (ObjectNode) rootNode;
         rootObjectNode.put("name", campaignName);

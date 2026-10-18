@@ -35,9 +35,8 @@ class PolymorphicTypesUnitTest {
 
     @Test
     void givenJsonWithTypeInfo_whenDeserializingTeam_thenSucceed() throws Exception {
-        String json = "{\"name\":\"Baeldung\",\"members\":[{\"@type\":\"fulltime\",\"id\":1,\"name\":\"John Doe\",\"monthlySalary\":5000.0},"
-                +
-                "{\"@type\":\"freelance\",\"id\":2,\"name\":\"Jane Smith\",\"hourlyRate\":50.0}]}\n";
+        String json = "{\"name\":\"Baeldung\",\"members\":[{\"@type\":\"fulltime\",\"id\":1,\"name\":\"John Doe\",\"monthlySalary\":5000.0}," +
+            "{\"@type\":\"freelance\",\"id\":2,\"name\":\"Jane Smith\",\"hourlyRate\":50.0}]}\n";
 
         Team deserialized = objectMapper.readValue(json, Team.class);
 

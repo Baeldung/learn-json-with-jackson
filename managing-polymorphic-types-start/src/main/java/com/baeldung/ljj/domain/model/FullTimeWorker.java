@@ -1,6 +1,7 @@
 package com.baeldung.ljj.domain.model;
 
 public class FullTimeWorker extends Worker {
+
     private double monthlySalary;
 
     public FullTimeWorker() {
