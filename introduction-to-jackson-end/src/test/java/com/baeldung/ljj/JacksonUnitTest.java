@@ -25,12 +25,12 @@ class JacksonUnitTest {
     @Test
     void whenDeserializingJson_thenCorrectCampaignObjectGenerated() {
         String jsonCampaign = """
-                {
-                  "code": "%s",
-                  "name": "%s",
-                  "description": "%s"
-                }
-                """.formatted("C001", "Campaign 1", "Deserialization");
+            {
+              "code": "%s",
+              "name": "%s",
+              "description": "%s"
+            }
+            """.formatted("C001", "Campaign 1", "Deserialization");
         Campaign campaign = objectMapper.readValue(jsonCampaign, Campaign.class);
 
         assertEquals("C001", campaign.getCode());

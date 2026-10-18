@@ -4,6 +4,6 @@ import tools.jackson.databind.ObjectMapper;
 
 class JacksonUnitTest {
 
-   ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = new ObjectMapper();
 
 }

@@ -40,7 +40,8 @@ class JacksonUnitTest {
 
     @Test
     void givenDisableFeatureToggle_thenBehaviorIsAdjusted() {
-        class EmptyClass {}
+        class EmptyClass {
+        }
 
         JsonMapper defaultMapper = JsonMapper.builder().build();
         String defaultOutput = defaultMapper.writeValueAsString(new EmptyClass());
@@ -62,8 +63,8 @@ class JacksonUnitTest {
         assertEquals("X1", campaignResult.getCode());
 
         JsonMapper strictMapper = JsonMapper.builder()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
-                .build();
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
+            .build();
         assertThrows(UnrecognizedPropertyException.class, () -> strictMapper.readValue(json, Campaign.class));
     }
 
@@ -76,8 +77,8 @@ class JacksonUnitTest {
         assertTrue(defaultOutput.contains("null"));
 
         JsonMapper customMapper = JsonMapper.builder()
-                .changeDefaultPropertyInclusion(v -> v.withValueInclusion(JsonInclude.Include.NON_NULL))
-                .build();
+            .changeDefaultPropertyInclusion(v -> v.withValueInclusion(JsonInclude.Include.NON_NULL))
+            .build();
         String output = customMapper.writeValueAsString(exampleCampaign);
         System.out.println(output);
         assertFalse(output.contains("null"));
@@ -86,8 +87,8 @@ class JacksonUnitTest {
     @Test
     void givenGlobalAlways_thenClassNonNull_andFieldAlways_shouldRespectAnnotationPrecedence() {
         JsonMapper mapper = JsonMapper.builder()
-                .changeDefaultPropertyInclusion(v -> v.withValueInclusion(JsonInclude.Include.ALWAYS))
-                .build();
+            .changeDefaultPropertyInclusion(v -> v.withValueInclusion(JsonInclude.Include.ALWAYS))
+            .build();
 
         // code = null (class-level NON_NULL should drop it)
         // description = null (field-level ALWAYS should force include)

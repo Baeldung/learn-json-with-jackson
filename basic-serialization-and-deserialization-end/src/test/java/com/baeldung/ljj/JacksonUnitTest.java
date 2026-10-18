@@ -53,7 +53,8 @@ public class JacksonUnitTest {
     @Test
     public void whenSerializingCampaignList_thenCorrectJsonArray() {
 
-        List<Campaign> campaigns = List.of(new Campaign("CAMP1", "CampaignName", "Description"), new Campaign("CAMP2", "SecondCampaign", "SecondDescription"));
+        List<Campaign> campaigns = List.of(new Campaign("CAMP1", "CampaignName", "Description"),
+            new Campaign("CAMP2", "SecondCampaign", "SecondDescription"));
 
         String json = objectMapper.writeValueAsString(campaigns);
 
